@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marble Maze</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #status {
+            font-size: 24px;
+            margin: 20px;
+        }
+
+        #button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #on-button {
+            background-color: green;
+            color: white;
+        }
+
+        #off-button {
+            background-color: red;
+            color: white;
+        }
+    </style>
+    <script>
+        function sendStatusToServer(status) {
+            fetch(`/stepper/${status}`, {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+</head>
+<body>
+    <h1>Toggle Switch</h1>
+    <div id="status">Status: Off</div>
+    <div id="button-container">
+        <button class="button" id="on-button">On</button>
+        <button class="button" id="off-button">Off</button>
+    </div>
+
+    <script>
+        const onButton = document.getElementById("on-button");
+        const offButton = document.getElementById("off-button");
+        const statusText = document.getElementById("status");
+
+        onButton.addEventListener("click", () => {
+            statusText.textContent = "Status: On";
+            statusText.style.color = "green";
+	    sendStatusToServer(true)
+	});
+
+        offButton.addEventListener("click", () => {
+            statusText.textContent = "Status: Off";
+            statusText.style.color = "red";
+	    sendStatusToServer(false)
+        });
+    </script>
+</body>
+</html>
+
